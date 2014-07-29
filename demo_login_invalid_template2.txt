@@ -1,0 +1,32 @@
+*** Setting ***
+Library    Selenium2Library
+#When end, will close browser
+Test Teardown    Close Browser
+#include resource
+Resource    demo_login_resource.txt
+
+*** Variables ***
+
+
+*** Testcases ***
+Invalid login
+    [Template]    Validate login system
+    #  Loop data use space(4) for separate field
+    #   username    :   password  
+    #-----------------------------
+        invalid         mode
+        demo            invalid
+        ${EMPTY}        ${EMPTY}
+        invalid         invalid
+
+*** Keywords ***
+Validate login system
+    [Arguments]    ${username}    ${password}
+    ไปหน้า login เข้าระบบตัวอย่าง
+    กรอกข้อมูลผู้ใช้งาน    ${username}    ${password}
+    ตรวจสอบว่า login ไม่สำเร็จ
+    Close Browser
+
+ตรวจสอบว่า login ไม่สำเร็จ
+    Title should be     Error Page
+    Wait Until Page Contains     Login failed
